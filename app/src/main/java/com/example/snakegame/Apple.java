@@ -9,7 +9,7 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import java.util.Random;
 
-class Apple {
+class Apple implements GameObject {
 
     // The location of the apple on the grid
     // Not in pixels
@@ -41,10 +41,10 @@ class Apple {
     }
 
     // This is called every time an apple is eaten
-    void spawn(){
+    public void move(){
         // Choose two random values and place the apple
         Random random = new Random();
-        location.x = random.nextInt(mSpawnRange.x) + 1;
+        location.x = random.nextInt(mSpawnRange.x -1) + 1;
         location.y = random.nextInt(mSpawnRange.y - 1) + 1;
     }
 
@@ -55,7 +55,7 @@ class Apple {
     }
 
     // Draw the apple
-    void draw(Canvas canvas, Paint paint){
+    public void draw(Canvas canvas, Paint paint){
         canvas.drawBitmap(mBitmapApple,
                 location.x * mSize, location.y * mSize, paint);
 

@@ -55,6 +55,7 @@ class Snake {
         mMoveRange = mr;
 
         // Create and scale the bitmaps
+
         mBitmapHeadRight = BitmapFactory
                 .decodeResource(context.getResources(),
                         R.drawable.head);
