@@ -228,8 +228,11 @@ class SnakeGame extends SurfaceView implements Runnable{
 
                 //Creates a rect for a text bounding box
                 Rect bounds = new Rect();
+                //bounds is set to the border of text
                 mPaint.getTextBounds("Tap To Play!", 0, "Tap To Play!".length(), bounds);
-                int xPos = ((mCanvas.getWidth()-bounds.width()) / 2);
+                //equals x value where text should start to be centered (subtracting width of text
+                int xPos = ((mCanvas.getWidth()/2)-(bounds.width() / 2));
+                //equals y value of where text should start to be centered
                 int yPos = (int) ((mCanvas.getHeight() / 2) - ((mPaint.descent() + mPaint.ascent()) / 2)) ;
                 mCanvas.drawText("Tap To Play!",
                         xPos, yPos, mPaint);
