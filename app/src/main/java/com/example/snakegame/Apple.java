@@ -34,8 +34,7 @@ class Apple {
         location.x = -10;
 
         // Load the image to the bitmap
-        int appleImageId = context.getResources().getIdentifier("apple", "drawable", context.getPackageName());
-        mBitmapApple = BitmapFactory.decodeResource(context.getResources(), appleImageId);
+        mBitmapApple = BitmapFactory.decodeResource(context.getResources(), R.drawable.apple);
 
         // Resize the bitmap
         mBitmapApple = Bitmap.createScaledBitmap(mBitmapApple, s, s, false);
