@@ -60,6 +60,13 @@ class Display {
         p.setColor(Color.argb(255,255,255,255));
         p.setTextSize(mTextFormatting);
         c.drawText("Score: "+gs.getScore(),mTextFormatting,mTextFormatting, p);
+        Rect bounds = new Rect();
+        p.getTextBounds("Ivan Gutierrez", 0, "Ivan Gutierrez".length(), bounds);
+        int xPos = (c.getWidth()-bounds.width());
+        int yPos = (int) (( - p.ascent()));
+        c.drawText("Austin Loft", xPos, yPos, p);
+        c.drawText("Ivan Gutierrez", xPos, yPos * 2, p);
+
         if(gs.getGameOver()){
             centerText(c, p, "Tap To Play!");
         }
