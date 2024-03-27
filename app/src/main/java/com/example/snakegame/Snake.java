@@ -11,7 +11,7 @@ import android.view.MotionEvent;
 
 import java.util.ArrayList;
 
-class Snake {
+class Snake implements GameStarter{
 
     // The location in the grid of all the segments
     private ArrayList<Point> segmentLocations;
@@ -102,7 +102,7 @@ class Snake {
     }
 
     // Get the snake ready for a new game
-    void reset(int w, int h) {
+    public void deSpawnRespawn() {
 
         // Reset the heading
         heading = Heading.RIGHT;
@@ -111,7 +111,7 @@ class Snake {
         segmentLocations.clear();
 
         // Start with a single snake segment
-        segmentLocations.add(new Point(w / 2, h / 2));
+        segmentLocations.add(new Point(mMoveRange.x / 2, mMoveRange.y / 2));
     }
 
 

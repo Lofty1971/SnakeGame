@@ -15,13 +15,10 @@ final class GameState {
     private static volatile boolean mDrawing = false;
     private GameStarter gameStarter;
     private int mScore;
-    //This wasn't in the original game, but I thought it would be fun to add if time allows
-    private int mHighScore;
     /*
     May need additional variables here like the Point array for segment locations
      */
-    //High Score persistence
-    private SharedPreferences.Editor mEditor;
+
 
     void increaseScore(){
         mScore++;
