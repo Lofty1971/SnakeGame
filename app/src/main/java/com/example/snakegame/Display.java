@@ -19,8 +19,8 @@ class Display {
     private int mTextFormatting;
     private int mScreenHeight;
     private int mScreenWidth;
-    private int buttonWidthScalar = 14;
-    private int buttonHeightScalar = 12;
+    private int buttonWidthScalar = 16;
+    private int buttonHeightScalar = 7;
     private int buttonPaddingScalar = 90;
     private int leftRightButtonVisibility = 0;
     private int pauseButtonVisibility = 100;
@@ -113,7 +113,9 @@ class Display {
         r = controls.get(2);
         p.setColor(Color.argb(pauseButtonVisibility, 255,255,255));
         c.drawRect(r.left, r.top, r.right, r.bottom, p);
+        p.setTextSize(mTextFormatting);
         p.setColor(Color.argb(255,255,255,255));
+        c.drawText("Play/Pause", r.left-250, r.top + 100, p);
     }
 
     ArrayList<Rect> getControls(){
