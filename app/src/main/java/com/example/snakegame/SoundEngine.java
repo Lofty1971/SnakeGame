@@ -9,9 +9,9 @@ import android.os.Build;
 
 import java.io.IOException;
 
-/*
-Handles sound playing
- */
+
+//Handles sound playing
+
 public class SoundEngine {
     private SoundPool mSP;
     private int mGetApple = -1;
@@ -52,8 +52,6 @@ public class SoundEngine {
         mSP.play(mSnakeDeath, 1, 1, 0, 0, 1);
     }
 
-    void playEat(){
-        mSP.play(mGetApple, 1, 1, 0, 0, 1);
-    }
+    void playEat(){mSP.play(mGetApple, 1, 1, 0, 0, 1);}
 
 }

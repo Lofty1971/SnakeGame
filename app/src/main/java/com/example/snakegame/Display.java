@@ -17,6 +17,9 @@ class Display {
     private int buttonPaddingScalar = 90;
     private int leftRightButtonVisibility = 10;
     private int pauseButtonVisibility = 100;
+    private int numBlocksWide = 40;
+    private int numBlocksHigh;
+    private int mBlockSize;
     private ArrayList<Rect> controls;
 
     static int LEFT = 0;
@@ -27,6 +30,8 @@ class Display {
         mScreenHeight = size.y;
         mScreenWidth = size.x;
         mTextFormatting = size.x/50;
+        mBlockSize = mScreenWidth/numBlocksWide;
+        numBlocksHigh = mScreenHeight / (mScreenWidth/numBlocksWide);
 
         prepareControls();
     }
@@ -94,5 +99,17 @@ class Display {
 
     ArrayList<Rect> getControls(){
         return controls;
+    }
+
+    public int getNumBlocksHigh() {
+        return numBlocksHigh;
+    }
+
+    public int getNumBlocksWide() {
+        return numBlocksWide;
+    }
+
+    public int getBlockSize() {
+        return mBlockSize;
     }
 }

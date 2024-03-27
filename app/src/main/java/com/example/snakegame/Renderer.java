@@ -16,17 +16,18 @@ class Renderer {
         mPaint = new Paint();
     }
 
-    void draw(GameState gs, Display display) {
+    void draw(GameState gs, Display display, Snake snake, Apple apple) {
         if (mSurfaceHolder.getSurface().isValid()) {
             mCanvas = mSurfaceHolder.lockCanvas();
             mCanvas.drawColor(Color.argb(255, 0, 0,
                     0));
             if (gs.getDrawing()) {
                 // Draw all the game objects here
-
+                snake.draw(mCanvas, mPaint);
+                apple.draw(mCanvas, mPaint);
             }
             if (gs.getGameOver()) {
-                // Draw a background graphic here
+                display.draw(mCanvas, mPaint, gs);
             }
             // Now we draw the HUD on top of everything else
 

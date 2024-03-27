@@ -2,10 +2,7 @@ package com.example.snakegame;
 
 import android.content.Context;
 
-/*
-Handles operations related to game state (starting, pausing, ending , resuming game)
- */
-class GameState {
+public class GameState {
     //Tracks whether the thread is running or not
     private static volatile boolean mThreadRunning = false;
     //Tracks whether the game is paused or not
@@ -16,60 +13,63 @@ class GameState {
     private static volatile boolean mDrawing = false;
     private GameStarter gameStarter;
     private int mScore;
-    /*
-    May need additional variables here like the Point array for segment locations
-     */
     private boolean snakeToTurnLeft = false;
     private boolean snakeToTurnRight = false;
 
-    void increaseScore(){
+    GameState(GameStarter gs, Context context) {
+        gameStarter = gs;
+
+
+    }
+
+    void increaseScore() {
         mScore++;
     }
 
-    int getScore(){
+    int getScore() {
         return mScore;
     }
 
-    void pause(){
+    void pause() {
         mPaused = true;
     }
 
-    void resume(){
+    void resume() {
         mGameOver = false;
         mPaused = false;
     }
 
-    void stopEverything(){
+    void stopEverything() {
         mPaused = true;
         mGameOver = true;
         mThreadRunning = false;
     }
 
-    boolean getThreadRunning(){
+    boolean getThreadRunning() {
         return mThreadRunning;
     }
 
-    void startThread(){
+    void startThread() {
         mThreadRunning = true;
     }
 
-    private void stopDrawing(){
+    private void stopDrawing() {
         mDrawing = false;
     }
 
-    private void startDrawing(){
+    private void startDrawing() {
         mDrawing = true;
     }
 
-    boolean getDrawing(){
+    boolean getDrawing() {
         return mDrawing;
     }
 
-    boolean getPaused(){
+    boolean getPaused() {
         return mPaused;
     }
 
-    boolean getGameOver(){
+    boolean getGameOver() {
         return mGameOver;
     }
 
@@ -89,13 +89,7 @@ class GameState {
         snakeToTurnLeft = true;
     }
 
-    GameState(GameStarter gs, Context context){
-        gameStarter = gs;
-
-
-    }
-
-    void startNewGame(){
+    void startNewGame() {
         mScore = 0;
         stopDrawing(); //Drawing mutex lock
         gameStarter.deSpawnRespawn();
@@ -104,13 +98,13 @@ class GameState {
     }
 
     //Called when snake hits self or edge of screen
-    void death(SoundEngine se){
+    void death(SoundEngine se) {
         se.playDeath();
         pause();
         endGame();
     }
 
-    private void endGame(){
+    private void endGame() {
         mGameOver = true;
         mPaused = true;
     }
