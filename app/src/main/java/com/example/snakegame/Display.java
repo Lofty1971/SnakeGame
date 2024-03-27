@@ -15,7 +15,7 @@ class Display {
     private int buttonWidthScalar = 14;
     private int buttonHeightScalar = 12;
     private int buttonPaddingScalar = 90;
-    private int leftRightButtonVisibility = 50;
+    private int leftRightButtonVisibility = 0;
     private int pauseButtonVisibility = 100;
     private int numBlocksWide = 40;
     private int numBlocksHigh;
@@ -45,9 +45,9 @@ class Display {
         Rect right = new Rect(mScreenWidth/2, 0, mScreenWidth, mScreenHeight);
         Rect pause = new Rect(
                 mScreenWidth-buttonPadding-buttonWidth,
-                buttonPadding,
+                mScreenHeight-buttonHeight-buttonPadding,
                 mScreenWidth-buttonPadding,
-                buttonPadding+buttonHeight
+                mScreenHeight-buttonPadding
                 );
         //partially pointless, maybe change from ArrayList to just Pause being passed since it's the only control drawn?
         controls = new ArrayList<>();

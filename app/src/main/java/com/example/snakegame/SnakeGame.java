@@ -88,6 +88,7 @@ class SnakeGame extends SurfaceView implements Runnable, GameStarter, GameEngine
                     Thread.sleep(timeToSleep);
                 } catch (InterruptedException e) {
                     // Handle the exception
+
                 }
             }
         }
