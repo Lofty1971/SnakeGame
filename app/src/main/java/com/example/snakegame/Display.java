@@ -22,7 +22,7 @@ class Display {
     private int buttonWidthScalar = 14;
     private int buttonHeightScalar = 12;
     private int buttonPaddingScalar = 90;
-    private int leftRightButtonVisibility = 50;
+    private int leftRightButtonVisibility = 0;
     private int pauseButtonVisibility = 100;
     private int numBlocksWide = 40;
     private int numBlocksHigh;
@@ -57,9 +57,9 @@ class Display {
         Rect right = new Rect(mScreenWidth/2, 0, mScreenWidth, mScreenHeight);
         Rect pause = new Rect(
                 mScreenWidth-buttonPadding-buttonWidth,
-                buttonPadding,
+                mScreenHeight-buttonHeight-buttonPadding,
                 mScreenWidth-buttonPadding,
-                buttonPadding+buttonHeight
+                mScreenHeight-buttonPadding
                 );
         //partially pointless, maybe change from ArrayList to just Pause being passed since it's the only control drawn?
         controls = new ArrayList<>();
@@ -74,6 +74,13 @@ class Display {
         c.drawBitmap(scaledBackground, srcRect, destRect, p);
         p.setTextSize(mTextFormatting);
         c.drawText("Score: "+gs.getScore(),mTextFormatting,mTextFormatting, p);
+        Rect bounds = new Rect();
+        p.getTextBounds("Ivan Gutierrez", 0, "Ivan Gutierrez".length(), bounds);
+        int xPos = (c.getWidth()-bounds.width());
+        int yPos = (int) (( - p.ascent()));
+        c.drawText("Austin Loft", xPos, yPos, p);
+        c.drawText("Ivan Gutierrez", xPos, yPos * 2, p);
+
         if(gs.getGameOver()){
             centerText(c, p, "Tap To Play!");
         }
