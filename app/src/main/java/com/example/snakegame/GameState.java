@@ -1,10 +1,11 @@
 package com.example.snakegame;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.media.SoundPool;
 
-final class GameState {
+/*
+Handles operations related to game state (starting, pausing, ending , resuming game)
+ */
+class GameState {
     //Tracks whether the thread is running or not
     private static volatile boolean mThreadRunning = false;
     //Tracks whether the game is paused or not
@@ -18,7 +19,8 @@ final class GameState {
     /*
     May need additional variables here like the Point array for segment locations
      */
-
+    private boolean snakeToTurnLeft = false;
+    private boolean snakeToTurnRight = false;
 
     void increaseScore(){
         mScore++;
@@ -71,7 +73,21 @@ final class GameState {
         return mGameOver;
     }
 
+    public boolean isSnakeToTurnRight() {
+        return snakeToTurnRight;
+    }
 
+    public void setSnakeToTurnRight() {
+        snakeToTurnRight = true;
+    }
+
+    public boolean isSnakeToTurnLeft() {
+        return snakeToTurnLeft;
+    }
+
+    public void setSnakeToTurnLeft() {
+        snakeToTurnLeft = true;
+    }
 
     GameState(GameStarter gs, Context context){
         gameStarter = gs;

@@ -5,6 +5,9 @@ import android.view.MotionEvent;
 
 import java.util.ArrayList;
 
+/*
+Handles touch inputs
+ */
 class UIController implements InputObserver{
     public UIController(GameEngineBroadcaster b){
         b.addObserver(this);
@@ -34,11 +37,11 @@ class UIController implements InputObserver{
             }
             else if (buttons.get(Display.LEFT).contains(x, y)) {
                 // Handle left button press
-                gameState.changeSnakeDirection(Direction.LEFT);
+                gameState.setSnakeToTurnLeft();
             }
             else if (buttons.get(Display.RIGHT).contains(x, y)) {
                 // Handle right button press
-                gameState.changeSnakeDirection(Direction.RIGHT);
+                gameState.setSnakeToTurnRight();
             }
         }
     }

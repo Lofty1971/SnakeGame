@@ -21,7 +21,9 @@ import androidx.core.content.res.ResourcesCompat;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
+/*
+Handles Game logic/gameplay loop
+ */
 class SnakeGame extends SurfaceView implements Runnable, GameStarter, GameEngineBroadcaster {
 
     private ArrayList<InputObserver>
@@ -32,6 +34,7 @@ class SnakeGame extends SurfaceView implements Runnable, GameStarter, GameEngine
     Display mDisplay;
     Renderer mRenderer;
     UIController mUIController;
+    SnakeController mSnakeController;
     // Objects for the game loop/thread
     private Thread mThread = null;
 
@@ -51,6 +54,7 @@ class SnakeGame extends SurfaceView implements Runnable, GameStarter, GameEngine
         super(context);
 
         mUIController = new UIController(this);
+        mSnakeController = new SnakeController(this, size);
         mGameState = new GameState(this, context);
         mSoundEngine = new SoundEngine(context);
         mDisplay = new Display(size);
@@ -83,23 +87,6 @@ class SnakeGame extends SurfaceView implements Runnable, GameStarter, GameEngine
     }
 
 
-    // Called to start a new game
-    public void newGame() {
-
-        // reset the snake
-        mSnake.reset(NUM_BLOCKS_WIDE, mNumBlocksHigh);
-
-        // Get the apple ready for dinner
-        mApple.move();
-
-        // Reset the mScore
-        mScore = 0;
-
-        // Setup mNextFrameTime so an update can triggered
-        mNextFrameTime = System.currentTimeMillis();
-    }
-
-
     // Handles the game loop
     @Override
     public void run() {
@@ -107,6 +94,7 @@ class SnakeGame extends SurfaceView implements Runnable, GameStarter, GameEngine
             long frameStartTime = System.currentTimeMillis();
             if(!mGameState.getPaused()) {
                 // Update game objects
+
             }
 
             mRenderer.draw(mGameState, mDisplay);
