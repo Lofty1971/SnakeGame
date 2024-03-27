@@ -37,11 +37,22 @@ class UIController implements InputObserver{
             }
             else if (buttons.get(Display.LEFT).contains(x, y)) {
                 // Handle left button press
-                gameState.setSnakeToTurnLeft();
+                if(gameState.getGameOver()){
+                    //if game not started then start
+                    gameState.startNewGame();
+                }
+                else {
+                    gameState.setSnakeToTurnLeft(true);
+                }
             }
             else if (buttons.get(Display.RIGHT).contains(x, y)) {
                 // Handle right button press
-                gameState.setSnakeToTurnRight();
+                if(gameState.getGameOver()){
+                    gameState.startNewGame();
+                }
+                else {
+                    gameState.setSnakeToTurnRight(true);
+                }
             }
         }
     }

@@ -22,8 +22,9 @@ public class GameState {
 
     }
 
-    void increaseScore() {
+    void increaseScore(SoundEngine se) {
         mScore++;
+        se.playEat();
     }
 
     int getScore() {
@@ -77,16 +78,16 @@ public class GameState {
         return snakeToTurnRight;
     }
 
-    public void setSnakeToTurnRight() {
-        snakeToTurnRight = true;
+    public void setSnakeToTurnRight(boolean Right) {
+        snakeToTurnRight = Right;
     }
 
     public boolean isSnakeToTurnLeft() {
         return snakeToTurnLeft;
     }
 
-    public void setSnakeToTurnLeft() {
-        snakeToTurnLeft = true;
+    public void setSnakeToTurnLeft(boolean Left) {
+        snakeToTurnLeft = Left;
     }
 
     void startNewGame() {

@@ -19,7 +19,6 @@ class SnakeGame extends SurfaceView implements Runnable, GameStarter, GameEngine
     Display mDisplay;
     Renderer mRenderer;
     UIController mUIController;
-    SnakeController mSnakeController;
     // Objects for the game loop/thread
     private Thread mThread = null;
 
@@ -34,7 +33,6 @@ class SnakeGame extends SurfaceView implements Runnable, GameStarter, GameEngine
         super(context);
 
         mUIController = new UIController(this);
-        mSnakeController = new SnakeController(this, size);
         mGameState = new GameState(this, context);
         mSoundEngine = new SoundEngine(context);
         mDisplay = new Display(size);
@@ -55,7 +53,8 @@ class SnakeGame extends SurfaceView implements Runnable, GameStarter, GameEngine
     }
 
     public void deSpawnRespawn() {
-
+        mSnake.reset();
+        mApple.reset();
     }
 
     public void addObserver(InputObserver o) {
@@ -70,11 +69,27 @@ class SnakeGame extends SurfaceView implements Runnable, GameStarter, GameEngine
             long frameStartTime = System.currentTimeMillis();
             if (!mGameState.getPaused()) {
                 // Update game objects
+                mSnake.switchHeading(mGameState);
                 mSnake.move();
-
+                if(mSnake.detectDeath()){
+                    mGameState.death(mSoundEngine);
+                } else if (mSnake.checkDinner(mApple.getLocation())) {
+                    mGameState.increaseScore(mSoundEngine);
+                    mApple.move();
+                }
             }
 
             mRenderer.draw(mGameState, mDisplay, mSnake, mApple);
+
+            long timeThisFrame = System.currentTimeMillis() - frameStartTime;
+            long timeToSleep = 100 - timeThisFrame; // 1000 ms / 10 frames per second = 100 ms per frame
+            if (timeToSleep > 0) {
+                try {
+                    Thread.sleep(timeToSleep);
+                } catch (InterruptedException e) {
+                    // Handle the exception
+                }
+            }
         }
     }
 

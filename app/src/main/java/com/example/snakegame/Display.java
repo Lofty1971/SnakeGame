@@ -15,7 +15,7 @@ class Display {
     private int buttonWidthScalar = 14;
     private int buttonHeightScalar = 12;
     private int buttonPaddingScalar = 90;
-    private int leftRightButtonVisibility = 10;
+    private int leftRightButtonVisibility = 50;
     private int pauseButtonVisibility = 100;
     private int numBlocksWide = 40;
     private int numBlocksHigh;

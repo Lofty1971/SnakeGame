@@ -11,7 +11,7 @@ import android.view.MotionEvent;
 
 import java.util.ArrayList;
 
-class Snake implements GameStarter{
+class Snake implements GameObject{
 
     // The location in the grid of all the segments
     private ArrayList<Point> segmentLocations;
@@ -102,7 +102,7 @@ class Snake implements GameStarter{
     }
 
     // Get the snake ready for a new game
-    public void deSpawnRespawn() {
+    public void reset() {
 
         // Reset the heading
         heading = Heading.RIGHT;
@@ -115,7 +115,7 @@ class Snake implements GameStarter{
     }
 
 
-    void move() {
+    public void move() {
         // Move the body
         // Start at the back and move it
         // to the position of the segment in front of it
@@ -131,7 +131,8 @@ class Snake implements GameStarter{
         // Get the existing head position
         Point p = segmentLocations.get(0);
 
-        // Move it appropriately
+
+        // Move it appropriately (heading is switched by gamestate)
         switch (heading) {
             case UP:
                 p.y--;
@@ -193,7 +194,7 @@ class Snake implements GameStarter{
         return false;
     }
 
-    void draw(Canvas canvas, Paint paint) {
+    public void draw(Canvas canvas, Paint paint) {
 
         // Don't run this code if ArrayList has nothing in it
         if (!segmentLocations.isEmpty()) {
@@ -246,10 +247,10 @@ class Snake implements GameStarter{
 
 
     // Handle changing direction
-    void switchHeading(MotionEvent motionEvent) {
+    void switchHeading(GameState gs) {
 
         // Is the tap on the right hand side?
-        if (motionEvent.getX() >= halfWayPoint) {
+        if (gs.isSnakeToTurnRight()) {
             switch (heading) {
                 // Rotate right
                 case UP:
@@ -266,7 +267,9 @@ class Snake implements GameStarter{
                     break;
 
             }
-        } else {
+            gs.setSnakeToTurnRight(false);
+        }
+        if(gs.isSnakeToTurnLeft()){
             // Rotate left
             switch (heading) {
                 case UP:
@@ -282,6 +285,7 @@ class Snake implements GameStarter{
                     heading = Heading.UP;
                     break;
             }
+            gs.setSnakeToTurnLeft(false);
         }
     }
 }

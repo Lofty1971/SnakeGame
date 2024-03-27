@@ -41,6 +41,13 @@ class Apple implements GameObject {
     }
 
     // This is called every time an apple is eaten
+    public void reset(){
+        // Choose two random values and place the apple
+        Random random = new Random();
+        location.x = random.nextInt(mSpawnRange.x -1) + 1;
+        location.y = random.nextInt(mSpawnRange.y - 1) + 1;
+    }
+
     public void move(){
         // Choose two random values and place the apple
         Random random = new Random();
