@@ -1,10 +1,17 @@
 package com.example.snakegame;
 
+
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.graphics.Typeface;
+
+import androidx.core.content.res.ResourcesCompat;
 
 import java.util.ArrayList;
 
@@ -20,18 +27,22 @@ class Display {
     private int numBlocksWide = 40;
     private int numBlocksHigh;
     private int mBlockSize;
+    private Bitmap background;
+    private Typeface comicSansTypeface;
     private ArrayList<Rect> controls;
 
     static int LEFT = 0;
     static int RIGHT = 1;
     static int PAUSE = 2;
 
-    Display(Point size){
+    Display(Context context, Point size){
         mScreenHeight = size.y;
         mScreenWidth = size.x;
         mTextFormatting = size.x/50;
         mBlockSize = mScreenWidth/numBlocksWide;
         numBlocksHigh = mScreenHeight / (mScreenWidth/numBlocksWide);
+        background = BitmapFactory.decodeResource(context.getResources(), R.drawable.mario);
+        comicSansTypeface = Typeface.createFromAsset(context.getAssets(), "font/comic_sans.ttf");
 
         prepareControls();
     }
@@ -57,7 +68,8 @@ class Display {
     }
 
     void draw(Canvas c, Paint p, GameState gs){
-        p.setColor(Color.argb(255,255,255,255));
+        //c.drawBitmap(background, 0, 0, null);
+        p.setTypeface(comicSansTypeface);
         p.setTextSize(mTextFormatting);
         c.drawText("Score: "+gs.getScore(),mTextFormatting,mTextFormatting, p);
         Rect bounds = new Rect();

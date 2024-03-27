@@ -35,7 +35,7 @@ class SnakeGame extends SurfaceView implements Runnable, GameStarter, GameEngine
         mUIController = new UIController(this);
         mGameState = new GameState(this, context);
         mSoundEngine = new SoundEngine(context);
-        mDisplay = new Display(size);
+        mDisplay = new Display(context, size);
         mRenderer = new Renderer(this);
 
 
