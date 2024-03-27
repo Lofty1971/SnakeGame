@@ -1,10 +1,17 @@
 package com.example.snakegame;
 
+
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
+
+import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 
 import java.util.ArrayList;
 
@@ -20,20 +27,25 @@ class Display {
     private int numBlocksWide = 40;
     private int numBlocksHigh;
     private int mBlockSize;
+    private Bitmap background;
+    private Bitmap scaledBackground;
     private ArrayList<Rect> controls;
 
     static int LEFT = 0;
     static int RIGHT = 1;
     static int PAUSE = 2;
 
-    Display(Point size){
+    Display(Context context, Point size){
         mScreenHeight = size.y;
         mScreenWidth = size.x;
         mTextFormatting = size.x/50;
         mBlockSize = mScreenWidth/numBlocksWide;
         numBlocksHigh = mScreenHeight / (mScreenWidth/numBlocksWide);
+        background =  BitmapFactory.decodeResource(context.getResources(), R.drawable.mario);
+        scaledBackground = Bitmap.createScaledBitmap(background, mScreenWidth, mScreenHeight, false);
 
         prepareControls();
+
     }
 
     private void prepareControls(){
@@ -57,7 +69,9 @@ class Display {
     }
 
     void draw(Canvas c, Paint p, GameState gs){
-        p.setColor(Color.argb(255,255,255,255));
+        Rect srcRect = new Rect(0, 0, scaledBackground.getWidth(), scaledBackground.getHeight());
+        Rect destRect = new Rect(0, 0, mScreenWidth, mScreenHeight);
+        c.drawBitmap(scaledBackground, srcRect, destRect, p);
         p.setTextSize(mTextFormatting);
         c.drawText("Score: "+gs.getScore(),mTextFormatting,mTextFormatting, p);
         if(gs.getGameOver()){
