@@ -12,6 +12,7 @@ import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Build;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -20,20 +21,16 @@ import androidx.core.content.res.ResourcesCompat;
 
 import java.io.IOException;
 
-class SnakeGame extends SurfaceView implements Runnable{
+class SnakeGame extends SurfaceView implements Runnable, GameStarter {
 
+    private GameState mGameState;
+    private SoundEngine mSoundEngine;
     // Objects for the game loop/thread
     private Thread mThread = null;
     // Control pausing between updates
     private long mNextFrameTime;
-    // Is the game currently playing and or paused?
-    private volatile boolean mPlaying = false;
-    private volatile boolean mPaused = true;
 
-    // for playing sound effects
-    private SoundPool mSP;
-    private int mEat_ID = -1;
-    private int mCrashID = -1;
+
 
     // The size in segments of the playable area
     private final int NUM_BLOCKS_WIDE = 40;
@@ -58,39 +55,14 @@ class SnakeGame extends SurfaceView implements Runnable{
     public SnakeGame(Context context, Point size) {
         super(context);
 
+        mGameState = new GameState(this, context);
+        mSoundEngine = new SoundEngine(context);
         // Work out how many pixels each block is
         int blockSize = size.x / NUM_BLOCKS_WIDE;
         // How many blocks of the same size will fit into the height
         mNumBlocksHigh = size.y / blockSize;
 
-        // Initialize the SoundPool
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            AudioAttributes audioAttributes = new AudioAttributes.Builder()
-                    .setUsage(AudioAttributes.USAGE_MEDIA)
-                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-                    .build();
 
-            mSP = new SoundPool.Builder()
-                    .setMaxStreams(5)
-                    .setAudioAttributes(audioAttributes)
-                    .build();
-        } else {
-            mSP = new SoundPool(5, AudioManager.STREAM_MUSIC, 0);
-        }
-        try {
-            AssetManager assetManager = context.getAssets();
-            AssetFileDescriptor descriptor;
-
-            // Prepare the sounds in memory
-            descriptor = assetManager.openFd("get_apple.ogg");
-            mEat_ID = mSP.load(descriptor, 0);
-
-            descriptor = assetManager.openFd("snake_death.ogg");
-            mCrashID = mSP.load(descriptor, 0);
-
-        } catch (IOException e) {
-            // Error
-        }
 
         // Initialize the drawing objects
         mSurfaceHolder = getHolder();
@@ -106,6 +78,10 @@ class SnakeGame extends SurfaceView implements Runnable{
                 new Point(NUM_BLOCKS_WIDE,
                         mNumBlocksHigh),
                 blockSize);
+
+    }
+
+    public void deSpawnRespawn(){
 
     }
 
@@ -130,8 +106,9 @@ class SnakeGame extends SurfaceView implements Runnable{
     // Handles the game loop
     @Override
     public void run() {
-        while (mPlaying) {
-            if(!mPaused) {
+        while (mGameState.getThreadRunning()) {
+            long frameStartTime = System.currentTimeMillis();
+            if(!mGameState.getPaused()) {
                 // Update 10 times a second
                 if (updateRequired()) {
                     update();
@@ -184,13 +161,13 @@ class SnakeGame extends SurfaceView implements Runnable{
             mScore = mScore + 1;
 
             // Play a sound
-            mSP.play(mEat_ID, 1, 1, 0, 0, 1);
+            mSoundEngine.playEat();
         }
 
         // Did the snake die?
         if (mSnake.detectDeath()) {
             // Pause the game ready to start again
-            mSP.play(mCrashID, 1, 1, 0, 0, 1);
+            mSoundEngine.playDeath();
 
             mPaused =true;
         }
@@ -220,7 +197,7 @@ class SnakeGame extends SurfaceView implements Runnable{
             mSnake.draw(mCanvas, mPaint);
 
             mPaint.setTextSize(50);
-            mCanvas.drawText("Ivan Gutierrez", getWidth() - 300, 100, mPaint);
+            mCanvas.drawText("Ivan Gutierrez", getWidth() - 350, 100, mPaint);
             mCanvas.drawText("Austin Loft", getWidth() - 300, 60, mPaint);
             
             // Draw some text while paused
@@ -276,6 +253,7 @@ class SnakeGame extends SurfaceView implements Runnable{
     }
 
 
+
     // Stop the thread
     public void pause() {
         mPlaying = false;
@@ -284,6 +262,23 @@ class SnakeGame extends SurfaceView implements Runnable{
         } catch (InterruptedException e) {
             // Error
         }
+    }
+
+    public void stopThread(){
+        mGameState.stopEverything();
+        try{
+            mThread.join();
+        }
+        catch (InterruptedException e){
+            Log.e("Exception", "stopThread()"+e.getMessage());
+        }
+    }
+
+    public void startThread(){
+        mGameState.startThread();
+
+        mThread = new Thread(this);
+        mThread.start();
     }
 
 
