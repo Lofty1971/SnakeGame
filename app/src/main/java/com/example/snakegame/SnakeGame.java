@@ -15,6 +15,9 @@ import android.os.Build;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+
+import androidx.core.content.res.ResourcesCompat;
+
 import java.io.IOException;
 
 class SnakeGame extends SurfaceView implements Runnable{
@@ -207,6 +210,7 @@ class SnakeGame extends SurfaceView implements Runnable{
             // Set the size and color of the mPaint for the text
             mPaint.setColor(Color.argb(255, 255, 255, 255));
             mPaint.setTextSize(120);
+            mPaint.setTypeface(ResourcesCompat.getFont(this.getContext(), R.font.comic_sans));
 
             // Draw the score
             mCanvas.drawText("" + mScore, 20, 120, mPaint);
